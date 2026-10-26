@@ -1,1 +1,347 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171a35">
+  <meta name="description" content="Una aventura interactiva per practicar català a quart de primària.">
+  <title>El Misteri de les Paraules</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
 
+<body>
+  <div id="app">
+
+    <!-- INICI DE SESSIÓ -->
+    <section id="loginScreen" class="login-screen screen">
+      <div class="login-card">
+        <div class="logo">🦉</div>
+        <p class="eyebrow">UNA AVENTURA EDUCATIVA</p>
+        <h1>El Misteri de les Paraules</h1>
+        <p class="subtitle">
+          Aprèn català, supera reptes i descobreix nous nivells.
+        </p>
+
+        <form id="loginForm">
+          <label for="username">Nom d'usuari</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            placeholder="El teu usuari"
+            autocomplete="username"
+            required
+          >
+
+          <label for="password">Contrasenya</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="La teva contrasenya"
+            autocomplete="current-password"
+            required
+          >
+
+          <p id="loginError" class="error-message" role="alert"></p>
+          <button class="button button-primary full-width" type="submit">
+            Entrar a l'aventura ✨
+          </button>
+        </form>
+
+        <p class="small-note">
+          El teu progrés es desa automàticament en aquest dispositiu.
+        </p>
+      </div>
+    </section>
+
+    <!-- APLICACIÓ PRINCIPAL -->
+    <section id="mainScreen" class="screen hidden">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon">🗝️</div>
+          <div>
+            <h1>El Misteri de les Paraules</h1>
+            <p>CATALÀ · 4t DE PRIMÀRIA</p>
+          </div>
+        </div>
+
+        <button id="logoutButton" class="button button-ghost" type="button">
+          Sortir
+        </button>
+      </header>
+
+      <main>
+        <!-- PRESENTACIÓ -->
+        <section class="hero">
+          <div class="hero-content">
+            <p class="eyebrow">EL TEU VIATGE COMENÇA AQUÍ</p>
+            <h2>Hola, <span id="playerName">explorador</span>! 🌟</h2>
+            <p>
+              Quatre aventures, 104 nivells i moltes paraules per descobrir.
+              Cada repte et farà aprendre una mica més!
+            </p>
+
+            <div class="progress-heading">
+              <span>Progrés general</span>
+              <strong id="overallProgressText">0 / 104</strong>
+            </div>
+
+            <div
+              class="progress-track"
+              role="progressbar"
+              aria-label="Progrés general"
+              aria-valuemin="0"
+              aria-valuemax="104"
+              aria-valuenow="0"
+              id="overallProgressBar"
+            >
+              <div id="overallProgressFill" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="hero-illustration" aria-hidden="true">🔮</div>
+        </section>
+
+        <!-- ESTADÍSTIQUES -->
+        <section class="stats-grid" aria-label="Les teves estadístiques">
+          <article class="stat-card">
+            <span class="stat-icon">⭐</span>
+            <div>
+              <strong id="totalPoints">0</strong>
+              <span>Punts</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-icon">📚</span>
+            <div>
+              <strong id="completedLevels">0 / 104</strong>
+              <span>Nivells superats</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-icon">📊</span>
+            <div>
+              <strong id="averageGrade">—</strong>
+              <span>Mitjana</span>
+            </div>
+          </article>
+        </section>
+
+        <!-- MASCOTA -->
+        <section class="mascot-panel">
+          <div class="mascot-avatar" id="homeMascot">🦉</div>
+          <div class="mascot-message">
+            <span class="mascot-name">ONA · LA TEVA COMPANYA</span>
+            <p id="mascotMessage">
+              Hola! Soc l'Ona. Preparat per començar la nostra aventura?
+            </p>
+          </div>
+        </section>
+
+        <!-- AVENTURES -->
+        <section class="section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">TRIA EL TEU CAMÍ</p>
+              <h2>Les quatre aventures</h2>
+            </div>
+          </div>
+
+          <div id="adventuresGrid" class="adventures-grid">
+            <!-- Les aventures es carreguen amb JavaScript -->
+          </div>
+        </section>
+
+        <!-- MAPA DE NIVELLS -->
+        <section class="section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">EL TEU PROPER REPTE</p>
+              <h2>Mapa de nivells</h2>
+            </div>
+            <span class="section-caption">104 nivells</span>
+          </div>
+
+          <div id="levelFilters" class="level-filters">
+            <!-- Filtres generats amb JavaScript -->
+          </div>
+
+          <div id="levelsGrid" class="levels-grid">
+            <!-- Els nivells es carreguen amb JavaScript -->
+          </div>
+
+          <p id="levelMapMessage" class="small-note">
+            Completa els nivells per desbloquejar els següents.
+          </p>
+        </section>
+
+        <!-- HISTORIAL DE NOTES -->
+        <section class="section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">EL TEU ESFORÇ</p>
+              <h2>Les meves notes</h2>
+            </div>
+          </div>
+
+          <div class="grades-panel">
+            <div class="grade-summary">
+              <span>Mitjana acumulada</span>
+              <strong id="gradesAverage">—</strong>
+              <span class="grade-scale">sobre 10</span>
+            </div>
+
+            <div id="gradesHistory" class="grades-history">
+              <p class="empty-state">
+                Quan completis el primer nivell, la teva nota apareixerà aquí.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>EL MISTERI DE LES PARAULES</p>
+        <span>Aprendre és una aventura. 🌙</span>
+      </footer>
+    </section>
+
+    <!-- PANTALLA D'EXERCICIS -->
+    <section id="quizScreen" class="screen hidden">
+      <header class="quiz-header">
+        <button id="backToMapButton" class="button button-ghost" type="button">
+          ← Mapa
+        </button>
+
+        <div class="quiz-heading">
+          <span id="quizAdventureName">AVENTURA</span>
+          <h2 id="quizLevelTitle">Nivell 1</h2>
+        </div>
+
+        <div class="question-counter">
+          <strong id="questionNumber">1 / 10</strong>
+          <span>Pregunta</span>
+        </div>
+      </header>
+
+      <div class="quiz-progress">
+        <div id="quizProgressFill"></div>
+      </div>
+
+      <main class="quiz-layout">
+        <section class="question-card">
+          <div class="question-label">
+            <span>REPTE ACTUAL</span>
+            <span id="questionTopic">CATALÀ</span>
+          </div>
+
+          <h2 id="questionText">Preparant la pregunta...</h2>
+          <p id="questionInstruction" class="question-instruction">
+            Llegeix atentament i tria la resposta correcta.
+          </p>
+
+          <div id="answersContainer" class="answers-container">
+            <!-- Les respostes es carreguen amb JavaScript -->
+          </div>
+
+          <div
+            id="answerFeedback"
+            class="answer-feedback hidden"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+          <div class="quiz-actions">
+            <button
+              id="checkAnswerButton"
+              class="button button-primary"
+              type="button"
+            >
+              Comprovar resposta
+            </button>
+
+            <button
+              id="nextQuestionButton"
+              class="button button-primary hidden"
+              type="button"
+            >
+              Següent pregunta →
+            </button>
+          </div>
+        </section>
+
+        <aside class="quiz-mascot-panel">
+          <div id="quizMascot" class="mascot-avatar">🦉</div>
+          <span class="mascot-name">L'ONA ET DIU...</span>
+          <p id="quizMascotMessage">
+            No tinguis pressa. Llegir bé és el primer pas per encertar!
+          </p>
+        </aside>
+      </main>
+    </section>
+
+    <!-- RESULTATS DEL NIVELL -->
+    <section id="resultScreen" class="screen hidden">
+      <main class="result-container">
+        <div id="resultIcon" class="result-icon">🌟</div>
+        <p class="eyebrow">REPTE COMPLETAT</p>
+        <h1 id="resultTitle">Molt bé!</h1>
+        <p id="resultLevelName" class="result-level-name">Nivell 1</p>
+
+        <div class="result-grade">
+          <strong id="resultGrade">10,0</strong>
+          <span>/ 10</span>
+        </div>
+
+        <p id="resultMessage" class="result-message">
+          Has acabat el repte!
+        </p>
+
+        <div class="result-stats">
+          <article>
+            <strong id="resultCorrectAnswers">0 / 10</strong>
+            <span>Respostes correctes</span>
+          </article>
+
+          <article>
+            <strong id="resultPointsEarned">0</strong>
+            <span>Punts guanyats</span>
+          </article>
+
+          <article>
+            <strong id="resultNewAverage">—</strong>
+            <span>Mitjana actual</span>
+          </article>
+        </div>
+
+        <section class="result-mascot">
+          <div id="resultMascot" class="mascot-avatar">🦉</div>
+          <div>
+            <strong id="resultMascotTitle">L'Ona et felicita!</strong>
+            <p id="resultMascotMessage">Cada intent t'ajuda a aprendre.</p>
+          </div>
+        </section>
+
+        <div class="result-actions">
+          <button id="continueLevelButton" class="button button-primary" type="button">
+            Continuar →
+          </button>
+
+          <button id="retryLevelButton" class="button button-secondary" type="button">
+            Tornar a practicar
+          </button>
+
+          <button id="resultMapButton" class="button button-ghost" type="button">
+            Tornar al mapa
+          </button>
+        </div>
+      </main>
+    </section>
+
+  </div>
+</body>
+          </html>
