@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171319">
+  <meta name="description" content="Un RPG medieval per aprendre català, superar reptes i derrotar Andrés.">
+  <title>La Caça d'Andrés</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="game">
+
+    <!-- PANTALLA D'INICI DE SESSIÓ -->
+    <section id="loginScreen" class="screen login-screen">
+      <div class="login-panel">
+        <p class="eyebrow">UNA AVENTURA DE LLENGUA CATALANA</p>
+        <h1>LA CAÇA<br><span>D'ANDRÉS</span></h1>
+        <p class="subtitle">Quatre regnes. Quatre guardians. Un últim enemic.</p>
+
+        <form id="loginForm">
+          <label for="username">Nom d'usuari</label>
+          <input id="username" name="username" type="text"
+                 autocomplete="username" required>
+
+          <label for="password">Contrasenya</label>
+          <input id="password" name="password" type="password"
+                 autocomplete="current-password" required>
+
+          <button type="submit" class="primary-button">
+            ENTRAR AL REGNE
+          </button>
+
+          <p id="loginError" class="error-message" role="alert"></p>
+        </form>
+
+        <p class="login-note">El teu progrés es desa en aquest dispositiu.</p>
+      </div>
+    </section>
+
+
+    <!-- INTRODUCCIÓ DEL PRIMER INICI -->
+    <section id="introScreen" class="screen hidden">
+      <div class="story-panel">
+        <p class="eyebrow">CAPÍTOL I · EL COMENÇAMENT</p>
+        <div class="story-emblem" aria-hidden="true">⚔</div>
+        <h2 id="introTitle">Una petició inesperada</h2>
+
+        <div id="introVillager" class="character-portrait">
+          <div class="portrait-placeholder">
+            <span>ALDEÀ</span>
+          </div>
+        </div>
+
+        <div id="introDialogue" class="dialogue-box">
+          — Si us plau, necessitem la teva ajuda. Andrés s'ha apoderat
+          de la fortalesa i només algú que domini el català podrà
+          desafiar-lo. Hauràs de recórrer quatre regnes, aprendre les
+          seves lliçons i derrotar els guardians. Estàs preparat?
+        </div>
+
+        <div class="dialogue-controls">
+          <button id="introNextButton" class="primary-button">
+            CONTINUAR
+          </button>
+          <button id="skipIntroButton" class="secondary-button">
+            SALTAR INTRODUCCIÓ
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- JOC PRINCIPAL -->
+    <section id="mainScreen" class="screen hidden">
+
+      <header class="game-header">
+        <div class="brand">
+          <span class="brand-symbol">⚔</span>
+          <div>
+            <h1>LA CAÇA D'ANDRÉS</h1>
+            <p id="playerWelcome">AVENTURER</p>
+          </div>
+        </div>
+
+        <div class="player-stats">
+          <div class="stat">
+            <span>NIVELL</span>
+            <strong id="playerLevel">1</strong>
+          </div>
+          <div class="stat">
+            <span>XP</span>
+            <strong id="totalXP">0</strong>
+          </div>
+        </div>
+
+        <button id="logoutButton" class="small-button">
+          SORTIR
+        </button>
+      </header>
+
+
+      <!-- BARRA D'EXPERIÈNCIA -->
+      <section class="xp-panel">
+        <div class="xp-labels">
+          <span>EXPERIÈNCIA</span>
+          <span id="xpProgressText">0 / 100 XP</span>
+        </div>
+        <div id="xpProgressBar" class="progress-track"
+             role="progressbar" aria-label="Experiència"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div id="xpProgressFill" class="progress-fill"></div>
+        </div>
+      </section>
+
+
+      <!-- RESUM DEL PROGRÉS -->
+      <section class="overview-panel">
+        <div>
+          <p class="eyebrow">CRÒNICA DE L'AVENTURA</p>
+          <h2>El teu viatge</h2>
+          <p id="playerNarrative">
+            Els quatre regnes esperen el teu retorn.
+          </p>
+        </div>
+
+        <div class="overview-stats">
+          <div>
+            <strong id="completedLevels">0</strong>
+            <span>Nivells superats</span>
+          </div>
+          <div>
+            <strong id="averageGrade">—</strong>
+            <span>Mitjana</span>
+          </div>
+          <div>
+            <strong id="keysCount">0/4</strong>
+            <span>Claus antigues</span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ELS QUATRE REGNES -->
+      <section id="kingdomsSection" class="kingdoms-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">TRIA EL TEU CAMÍ</p>
+            <h2>Els quatre regnes</h2>
+          </div>
+          <span class="section-note">ACCÉS LLIURE</span>
+        </div>
+
+        <div id="kingdomsGrid" class="kingdoms-grid">
+
+          <article class="kingdom-card kingdom-letters">
+            <div class="kingdom-art" aria-hidden="true">Ⅰ</div>
+            <div class="kingdom-content">
+              <p class="kingdom-number">REGNE I</p>
+              <h3>El Regne de les Lletres</h3>
+              <p>Ortografia, accents, apòstrofs i puntuació.</p>
+              <div class="kingdom-meta">
+                <span>Nivells 1–25</span>
+                <span>Guardià: 26</span>
+              </div>
+              <button class="primary-button kingdom-button"
+                      data-kingdom="letters">
+                ENTRAR AL REGNE
+              </button>
+            </div>
+          </article>
+
+          <article class="kingdom-card kingdom-stories">
+            <div class="kingdom-art" aria-hidden="true">Ⅱ</div>
+            <div class="kingdom-content">
+              <p class="kingdom-number">REGNE II</p>
+              <h3>El Regne de les Històries</h3>
+              <p>Lectura, comprensió i interpretació de textos.</p>
+              <div class="kingdom-meta">
+                <span>Nivells 27–51</span>
+                <span>Guardià: 52</span>
+              </div>
+              <button class="primary-button kingdom-button"
+                      data-kingdom="stories">
+                ENTRAR AL REGNE
+              </button>
+            </div>
+          </article>
+
+          <article class="kingdom-card kingdom-grammar">
+            <div class="kingdom-art" aria-hidden="true">Ⅲ</div>
+            <div class="kingdom-content">
+              <p class="kingdom-number">REGNE III</p>
+              <h3>El Regne de la Gramàtica</h3>
+              <p>Noms, verbs, adjectius i construcció de frases.</p>
+              <div class="kingdom-meta">
+                <span>Nivells 53–77</span>
+                <span>Guardià: 78</span>
+              </div>
+              <button class="primary-button kingdom-button"
+                      data-kingdom="grammar">
+                ENTRAR AL REGNE
+              </button>
+            </div>
+          </article>
+
+          <article class="kingdom-card kingdom-words">
+            <div class="kingdom-art" aria-hidden="true">Ⅳ</div>
+            <div class="kingdom-content">
+              <p class="kingdom-number">REGNE IV</p>
+              <h3>El Regne de les Paraules</h3>
+              <p>Vocabulari, sinònims, antònims i expressió escrita.</p>
+              <div class="kingdom-meta">
+                <span>Nivells 79–103</span>
+                <span>Guardià: 104</span>
+              </div>
+              <button class="primary-button kingdom-button"
+                      data-kingdom="words">
+                ENTRAR AL REGNE
+              </button>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+
+      <!-- NIVELLS DEL REGNE SELECCIONAT -->
+      <section id="levelsSection" class="levels-section hidden">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" id="selectedKingdomLabel">REGNE</p>
+            <h2 id="selectedKingdomTitle">Nivells</h2>
+          </div>
+          <button id="backToKingdomsButton" class="secondary-button">
+            TORNAR ALS REGNES
+          </button>
+        </div>
+
+        <div id="levelsGrid" class="levels-grid"></div>
+      </section>
+
+
+      <!-- ELS QUATRE GUARDIANS I LES CLAUS -->
+      <section class="guardians-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ELS GRANS REPTES</p>
+            <h2>Els quatre guardians</h2>
+          </div>
+          <span id="guardiansProgress">0/4</span>
+        </div>
+
+        <div class="guardians-grid">
+          <article class="guardian-card">
+            <div class="guardian-art guardian-art-one">
+              <div class="boss-placeholder">GUARDIÀ I</div>
+            </div>
+            <h3>El Guardià de les Lletres</h3>
+            <p>Nivell 26</p>
+            <span id="guardianStatus26" class="status-label">PENDENT</span>
+          </article>
+
+          <article class="guardian-card">
+            <div class="guardian-art guardian-art-two">
+              <div class="boss-placeholder">GUARDIÀ II</div>
+            </div>
+            <h3>El Senyor de les Històries</h3>
+            <p>Nivell 52</p>
+            <span id="guardianStatus52" class="status-label">PENDENT</span>
+          </article>
+
+          <article class="guardian-card">
+            <div class="guardian-art guardian-art-three">
+              <div class="boss-placeholder">GUARDIÀ III</div>
+            </div>
+            <h3>El Mestre de la Gramàtica</h3>
+            <p>Nivell 78</p>
+            <span id="guardianStatus78" class="status-label">PENDENT</span>
+          </article>
+
+          <article class="guardian-card">
+            <div class="guardian-art guardian-art-four">
+              <div class="boss-placeholder">GUARDIÀ IV</div>
+            </div>
+            <h3>El Sobirà de les Paraules</h3>
+            <p>Nivell 104</p>
+            <span id="guardianStatus104" class="status-label">PENDENT</span>
+          </article>
+        </div>
+
+        <div class="keys-panel">
+          <h3>Les quatre claus antigues</h3>
+          <div class="keys-grid">
+            <div id="key26" class="key-slot">CLÀU I</div>
+            <div id="key52" class="key-slot">CLÀU II</div>
+            <div id="key78" class="key-slot">CLÀU III</div>
+            <div id="key104" class="key-slot">CLÀU IV</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- PORTA DEL CAP FINAL -->
+      <section class="final-gate-section">
+        <div class="final-gate-art">
+          <div class="gate-placeholder">LA PORTA DEL SOBIRÀ</div>
+        </div>
+        <div class="final-gate-content">
+          <p class="eyebrow">DESTINACIÓ FINAL</p>
+          <h2>La fortalesa d'Andrés</h2>
+          <p>Només qui posseeixi les quatre claus podrà entrar a la cambra del cap final.</p>
+          <p id="finalGateStatus">Quatre claus necessàries: 0/4.</p>
+          <button id="finalBossButton" class="danger-button" disabled>
+            DESAFIAR ANDRÉS
+          </button>
+        </div>
+      </section>
+
+
+      <!-- ACTIVITAT DE CÒPIA -->
+      <section class="copy-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ACTIVITAT INDEPENDENT</p>
+            <h2>L'Scriptorium</h2>
+          </div>
+          <span class="section-note">COPIAT MANUAL</span>
+        </div>
+
+        <p>Copia el text al quadern físic. Quan hagis acabat, el professor podrà registrar la nota.</p>
+        <button id="openCopyButton" class="secondary-button">
+          OBRIR L'SCRIPTORIUM
+        </button>
+      </section>
+
+
+      <!-- HISTORIAL ACADÈMIC DE L'ALUMNE -->
+      <section class="grades-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">REGISTRE PERSONAL</p>
+            <h2>Les meves notes</h2>
+          </div>
+        </div>
+        <div id="gradesHistory" class="grades-history">
+          <p>Encara no hi ha notes registrades.</p>
+        </div>
+      </section>
+
+      <footer class="game-footer">
+        <p>LA CAÇA D'ANDRÉS · APRÈN, LLUITA I SUPERA'T</p>
+      </footer>
+    </section>
+
+
+    <!-- PANTALLA DE COMBAT -->
+    <section id="quizScreen" class="screen hidden">
+      <header class="combat-header">
+        <button id="exitQuizButton" class="secondary-button">
+          SORTIR DEL COMBAT
+        </button>
+        <span id="quizLevelLabel">NIVELL 1</span>
+      </header>
+
+      <div id="bossArena" class="boss-arena hidden">
+        <div id="bossPortrait" class="boss-portrait">
+          <div id="bossPortraitPlaceholder">EL GUARDIÀ</div>
+        </div>
+        <div class="boss-info">
+          <p class="eyebrow">ENEMIC</p>
+          <h2 id="bossName">El Guardià</h2>
+          <div class="health-labels">
+            <span>VIDA DEL GUARDIÀ</span>
+            <span id="bossHealthText">100%</span>
+          </div>
+          <div class="health-track">
+            <div id="bossHealthFill" class="health-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-panel">
+        <div class="quiz-progress-info">
+          <span id="questionCounter">PREGUNTA 1/10</span>
+          <span id="questionXP">+10 XP</span>
+        </div>
+        <div class="progress-track">
+          <div id="quizProgressFill" class="progress-fill"></div>
+        </div>
+
+        <p id="questionTopic" class="eyebrow">ORTOGRAFIA</p>
+        <h2 id="questionText">Pregunta</h2>
+        <p id="questionInstruction">Selecciona la resposta correcta.</p>
+
+        <div id="answersContainer" class="answers-container"></div>
+        <div id="answerFeedback" class="answer-feedback" aria-live="polite"></div>
+
+        <button id="checkAnswerButton" class="primary-button" disabled>
+          COMPROVAR RESPOSTA
+        </button>
+        <button id="nextQuestionButton" class="primary-button hidden">
+          SEGÜENT PREGUNTA
+        </button>
+      </div>
+    </section>
+
+
+    <!-- RESULTAT DEL COMBAT -->
+    <section id="resultScreen" class="screen hidden">
+      <div class="result-panel">
+        <p class="eyebrow">RESULTAT DEL COMBAT</p>
+        <h2 id="resultTitle">Combat acabat</h2>
+        <p id="resultLevelName">Nivell</p>
+
+        <div class="result-grade">
+          <span>NOTA</span>
+          <strong id="resultGrade">0,0</strong>
+          <span>/10</span>
+        </div>
+
+        <div class="result-stats">
+          <div>
+            <span>Respostes correctes</span>
+            <strong id="resultCorrectAnswers">0/10</strong>
+          </div>
+          <div>
+            <span>XP guanyada</span>
+            <strong id="resultXP">0</strong>
+          </div>
+        </div>
+
+        <p id="resultMessage"></p>
+        <div id="keyRewardMessage" class="key-reward-message hidden"></div>
+
+        <button id="returnToMapButton" class="primary-button">
+          TORNAR ALS REGNES
+        </button>
+        <button id="retryLevelButton" class="secondary-button">
+          TORNAR-HI A JUGAR
+        </button>
+      </div>
+    </section>
+
+
+    <!-- SCRIPTORIUM: COPIAT -->
+    <section id="copyScreen" class="screen hidden">
+      <div class="copy-panel">
+        <p class="eyebrow">L'SCRIPTORIUM</p>
+        <h2>El copiat manual</h2>
+        <p>Llegeix el text i copia'l al teu quadern respectant l'ortografia i la puntuació.</p>
+
+        <article class="copy-text-card">
+          <h3 id="copyTextTitle">Text del dia</h3>
+          <p id="copyTextContent"></p>
+        </article>
+
+        <p class="copy-warning">
+          Aquesta activitat s'ha de copiar a mà en un quadern físic.
+          El professor revisarà el resultat i introduirà la nota.
+        </p>
+
+        <button id="copyFinishedButton" class="primary-button">
+          HE ACABAT
+        </button>
+
+        <form id="copyCodeForm" class="hidden">
+          <label for="copyCode">Contrasenya del professor</label>
+          <input id="copyCode" type="password" inputmode="numeric"
+                 autocomplete="off" required>
+          <p id="copyCodeError" class="error-message" role="alert"></p>
+          <button type="submit" class="primary-button">
+            CONTINUAR
+          </button>
+        </form>
+
+        <form id="copyGradeForm" class="hidden">
+          <label for="copyGrade">Nota del copiat (0–10)</label>
+          <input id="copyGrade" type="number" min="0" max="10"
+                 step="0.1" required>
+          <label for="copyTeacherComment">Comentari (opcional)</label>
+          <textarea id="copyTeacherComment" rows="3"></textarea>
+          <button type="submit" class="primary-button">
+            DESAR LA NOTA
+          </button>
+        </form>
+
+        <button id="closeCopyButton" class="secondary-button">
+          TORNAR AL JOC
+        </button>
+      </div>
+    </section>
+
+
+    <!-- COMPTE DE PROFESSOR -->
+    <section id="teacherScreen" class="screen hidden">
+      <header class="teacher-header">
+        <div>
+          <p class="eyebrow">COMPTE DE PROFESSOR</p>
+          <h1 id="teacherGreeting">Hola, súper sexy señor Andrés.</h1>
+          <p>Bienvenido a tu cuenta de profesor. Aquí puedes gestionar el progreso de la alumna.</p>
+        </div>
+        <button id="teacherLogoutButton" class="secondary-button">
+          CERRAR SESIÓN
+        </button>
+      </header>
+
+      <nav class="teacher-tabs" aria-label="Secciones del profesor">
+        <button class="teacher-tab active" data-teacher-tab="grades">
+          NOTAS
+        </button>
+        <button class="teacher-tab" data-teacher-tab="xp">
+          EXPERIENCIA
+        </button>
+        <button class="teacher-tab" data-teacher-tab="rewards">
+          PREMIOS
+        </button>
+        <button class="teacher-tab" data-teacher-tab="progress">
+          PROGRESO
+        </button>
+      </nav>
+
+      <!-- GESTIÓ DE NOTES -->
+      <section id="teacherGradesPanel" class="teacher-panel">
+        <h2>Todas las notas</h2>
+        <p>Consulta les qualificacions i modifica-les quan sigui necessari.</p>
+
+        <div id="teacherGradesHistory" class="teacher-grades-history">
+          <p>Encara no hi ha notes registrades.</p>
+        </div>
+
+        <form id="teacherAddGradeForm" class="teacher-form">
+          <h3>Añadir o corregir una nota</h3>
+          <label for="teacherGradeName">Actividad o nivel</label>
+          <input id="teacherGradeName" type="text" required>
+
+          <label for="teacherGradeValue">Nota (0–10)</label>
+          <input id="teacherGradeValue" type="number" min="0" max="10"
+                 step="0.1" required>
+
+          <label for="teacherGradeComment">Comentario</label>
+          <textarea id="teacherGradeComment" rows="3"></textarea>
+
+          <button type="submit" class="primary-button">
+            GUARDAR NOTA
+          </button>
+        </form>
+      </section>
+
+      <!-- CONTROL D'EXPERIÈNCIA -->
+      <section id="teacherXPPanel" class="teacher-panel hidden">
+        <h2>Gestionar experiencia</h2>
+        <p>La cantidad indicada se sumará o restará de la XP actual.</p>
+
+        <div class="teacher-current-xp">
+          XP actual: <strong id="teacherCurrentXP">0</strong>
+        </div>
+
+        <form id="teacherXPForm" class="teacher-form">
+          <label for="teacherXPAmount">Cantidad de XP</label>
+          <input id="teacherXPAmount" type="number" min="1"
+                 step="1" required>
+
+          <label for="teacherXPAction">Acción</label>
+          <select id="teacherXPAction" required>
+            <option value="add">Añadir XP</option>
+            <option value="remove">Quitar XP</option>
+          </select>
+
+          <label for="teacherXPReason">Motivo del cambio</label>
+          <input id="teacherXPReason" type="text" required>
+
+          <button type="submit" class="primary-button">
+            APLICAR CAMBIO
+          </button>
+        </form>
+
+        <div id="teacherXPHistory" class="teacher-history"></div>
+      </section>
+
+      <!-- GESTIÓ DE PREMIS -->
+      <section id="teacherRewardsPanel" class="teacher-panel hidden">
+        <h2>Premios especiales</h2>
+        <p>Concede o retira recompensas dentro del juego.</p>
+
+        <form id="teacherRewardForm" class="teacher-form">
+          <label for="teacherRewardName">Nombre del premio</label>
+          <input id="teacherRewardName" type="text" required>
+
+          <label for="teacherRewardDescription">Descripción</label>
+          <textarea id="teacherRewardDescription" rows="3"></textarea>
+
+          <label for="teacherRewardAction">Acción</label>
+          <select id="teacherRewardAction" required>
+            <option value="grant">Conceder premio</option>
+            <option value="revoke">Retirar premio</option>
+          </select>
+
+          <button type="submit" class="primary-button">
+            APLICAR PREMIO
+          </button>
+        </form>
+
+        <h3>Premios actuales</h3>
+        <div id="teacherRewardsList" class="teacher-history"></div>
+      </section>
+
+      <!-- PROGRÉS I HISTORIAL -->
+      <section id="teacherProgressPanel" class="teacher-panel hidden">
+        <h2>Progreso de la alumna</h2>
+
+        <div class="teacher-progress-grid">
+          <div>
+            <span>Nivel del jugador</span>
+            <strong id="teacherPlayerLevel">1</strong>
+          </div>
+          <div>
+            <span>Experiencia</span>
+            <strong id="teacherPlayerXP">0 XP</strong>
+          </div>
+          <div>
+            <span>Niveles completados</span>
+            <strong id="teacherCompletedLevels">0</strong>
+          </div>
+          <div>
+            <span>Media de notas</span>
+            <strong id="teacherAverageGrade">—</strong>
+          </div>
+          <div>
+            <span>Guardians derrotats</span>
+            <strong id="teacherGuardiansDefeated">0/4</strong>
+          </div>
+          <div>
+            <span>Claves obtenidas</span>
+            <strong id="teacherKeysCount">0/4</strong>
+          </div>
+        </div>
+
+        <h3>Historial de cambios</h3>
+        <div id="teacherAuditHistory" class="teacher-history"></div>
+      </section>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+  </html>
